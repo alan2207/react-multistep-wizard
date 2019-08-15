@@ -1,15 +1,24 @@
 import React from 'react'
-import { number } from 'prop-types'
+import { number, object } from 'prop-types'
 export const WizardContext = React.createContext()
 
 export default class Wizard extends React.Component {
   static propTypes = {
-    startStep: number
+    startStep: number,
+    externalOverrides: object
   };
 
   static defaultProps = {
     startStep: 1
   };
+
+  static getDerivedStateFromProps(props, state) {
+    return {
+      ...state,
+      ...(props.externalOverrides && { ...props.externalOverrides })
+    }
+  }
+
   previous = () => {
     if (this.state.currentStep > 1) {
       this.setState(({ currentStep }) => ({ currentStep: currentStep - 1 }))
@@ -36,7 +45,8 @@ export default class Wizard extends React.Component {
     init: this.init,
     previous: this.previous,
     next: this.next,
-    jump: this.jump
+    jump: this.jump,
+    ...(this.props.externalOverrides && { ...this.props.externalOverrides })
   };
 
   render() {
