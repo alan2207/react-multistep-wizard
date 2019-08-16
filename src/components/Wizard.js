@@ -58,7 +58,7 @@ export default class Wizard extends React.Component {
   state = {
     currentStep:
       this.props.externalOverrides.currentStep || this.props.startStep,
-    totalSteps: 0,
+    totalSteps: 1,
     init: this.init,
     previous: this.previous,
     next: this.next,
