@@ -21,20 +21,20 @@ export default class Wizard extends React.Component {
     }
   }
 
-  previous = () => {
+  previous = (...args) => {
     if (this.state.currentStep > 1) {
       if (this.props.externalOverrides.previous) {
-        this.props.externalOverrides.previous()
+        this.props.externalOverrides.previous(...args)
       } else {
         this.setState(({ currentStep }) => ({ currentStep: currentStep - 1 }))
       }
     }
   };
 
-  next = () => {
+  next = (...args) => {
     if (this.state.currentStep < this.state.totalSteps) {
       if (this.props.externalOverrides.next) {
-        this.props.externalOverrides.next()
+        this.props.externalOverrides.next(...args)
       } else {
         this.setState(({ currentStep }) => ({ currentStep: currentStep + 1 }))
       }
