@@ -42,7 +42,7 @@ export default class Wizard extends React.Component {
   };
 
   jump = position => {
-    if (position <= this.totalSteps) {
+    if (position <= this.state.totalSteps) {
       if (this.props.externalOverrides.jump) {
         this.props.externalOverrides.jump(position)
       } else {
