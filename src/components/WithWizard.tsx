@@ -7,7 +7,14 @@ const WithWizard: React.FC<{
 }> = props => {
   return (
     <WizardContext.Consumer>
-      {({ init, ...context }) => props.children(context)}
+      {({ init, ...context }) => {
+        if (typeof props.children === 'function') {
+          return props.children(context);
+        } else {
+          console.warn('WithWizard component expects a function as children!');
+          return props.children;
+        }
+      }}
     </WizardContext.Consumer>
   );
 };
