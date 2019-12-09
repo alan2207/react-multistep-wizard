@@ -43,6 +43,7 @@ class Example extends React.Component {
   }
 }
 ```
+[Live Demo](https://codesandbox.io/s/mystifying-frog-wpdrk)
 
 ## API
 
@@ -53,12 +54,15 @@ Component that controls the entire state of the component.
   - `startStep` - choose from which step to start the wizard. Defaults to 1.
   - `externalOverrides` - use it for the external control of the component, for example if you want the wizard component to be controlled from an external source.
   ```
-<Wizard startStep={1} externalOverrides={{
+<Wizard
+  startStep={1}
+  externalOverrides={{
     currentStep: externalCurrentStep,
     next: externalNextFn,
     previous: externalPreviousFn,
     jump: externalJumpFn
-}}>{...}</Wizard>
+  }}
+>{...}</Wizard>
   ```
 
 ### `Steps`
@@ -75,9 +79,9 @@ Render prop options from `WizardContext`:
   * `jump`
 
 ### `WithWizard`
-Component similar to `Step`. The only difference is that it should not be rendered from the `Steps` component, that way it is always rendered no matter what is the current step. Convinient for indicators tracking progress.
+Component similar to `Step`. The only difference is that it should not be rendered from the `Steps` component, that way making sure it is always rendered regardless of the current step. Convenient for progress indicators.
 
-For more info check out the example folder.
+For more info check out the example folder or the live demo.
 
 
 ## License
