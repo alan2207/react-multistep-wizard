@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { WizardContext, State } from './Wizard';
+import { WizardContext, WizardContextState } from './Wizard';
 
-const WithWizard: React.FC<{
-  children: (ctx: State) => React.ReactNode;
+export const WithWizard: React.FC<{
+  children: (ctx: WizardContextState) => React.ReactNode;
 }> = props => {
   return (
     <WizardContext.Consumer>
@@ -18,5 +18,3 @@ const WithWizard: React.FC<{
     </WizardContext.Consumer>
   );
 };
-
-export default WithWizard;

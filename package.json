@@ -1,7 +1,7 @@
 {
   "name": "react-multistep-wizard",
-  "version": "2.0.0",
-  "description": "Simple react wizard component",
+  "version": "2.1.0",
+  "description": "React wizard component",
   "author": "alan2207",
   "license": "MIT",
   "repository": "alan2207/react-multistep-wizard",
@@ -19,7 +19,8 @@
     "start": "rollup -c -w",
     "prepare": "yarn run build",
     "predeploy": "cd example && yarn install && yarn run build",
-    "deploy": "gh-pages -d example/build"
+    "deploy": "gh-pages -d example/build",
+    "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\""
   },
   "dependencies": {},
   "peerDependencies": {
@@ -36,6 +37,7 @@
     "babel-runtime": "^6.26.0",
     "cross-env": "^5.1.4",
     "gh-pages": "^1.2.0",
+    "prettier": "^1.19.1",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
     "react-scripts-ts": "^2.16.0",

@@ -6,7 +6,7 @@ const flatMap = function(lambda: any, array: any) {
   return Array.prototype.concat.apply([], array.map(lambda));
 };
 
-export default class Steps extends React.Component {
+export class Steps extends React.Component {
   static contextType = WizardContext;
 
   componentDidMount() {
@@ -14,7 +14,7 @@ export default class Steps extends React.Component {
       this.context.init(
         this.props.children.length
           ? flatMap((v: any) => v, this.props.children).length
-          : 1
+          : 1,
       );
     }
   }

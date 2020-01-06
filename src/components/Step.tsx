@@ -1,8 +1,8 @@
 import React from 'react';
-import { WizardContext, State } from './Wizard';
+import { WizardContext, WizardContextState } from './Wizard';
 
-const Step: React.FC<{
-  children: (ctx: State) => React.ReactNode;
+export const Step: React.FC<{
+  children: (ctx: WizardContextState) => React.ReactNode;
 }> = props => {
   return (
     <WizardContext.Consumer>
@@ -17,5 +17,3 @@ const Step: React.FC<{
     </WizardContext.Consumer>
   );
 };
-
-export default Step;

@@ -1,11 +1,11 @@
 import React from 'react';
 
-interface Props {
+export interface WizardProps {
   startStep: number;
-  externalOverrides: Partial<State>;
+  externalOverrides: Partial<WizardContextState>;
 }
 
-export interface State {
+export interface WizardContextState {
   currentStep: number;
   totalSteps: number;
   previous: Wizard['previous'];
@@ -14,26 +14,29 @@ export interface State {
 }
 
 export const WizardContext = React.createContext<
-  State & { init: Wizard['init'] }
+  WizardContextState & { init: Wizard['init'] }
 >({
   currentStep: 1,
   totalSteps: 1,
   previous() {},
   next() {},
   jump() {},
-  init() {}
+  init() {},
 });
 
-export default class Wizard extends React.Component<Props, State> {
+export class Wizard extends React.Component<WizardProps, WizardContextState> {
   static defaultProps = {
     startStep: 1,
-    externalOverrides: {}
+    externalOverrides: {},
   };
 
-  static getDerivedStateFromProps(props: Props, state: State) {
+  static getDerivedStateFromProps(
+    props: WizardProps,
+    state: WizardContextState,
+  ) {
     return {
       ...state,
-      currentStep: props.externalOverrides.currentStep || state.currentStep
+      currentStep: props.externalOverrides.currentStep || state.currentStep,
     };
   }
 
@@ -78,7 +81,7 @@ export default class Wizard extends React.Component<Props, State> {
     init: this.init,
     previous: this.previous,
     next: this.next,
-    jump: this.jump
+    jump: this.jump,
   };
 
   render() {
