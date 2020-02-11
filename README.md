@@ -1,6 +1,6 @@
 # react-multistep-wizard
 
-> Simple react wizard component
+> React wizard component
 
 [![NPM](https://img.shields.io/npm/v/react-multistep-wizard.svg)](https://www.npmjs.com/package/react-multistep-wizard)
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
@@ -59,6 +59,8 @@ Component that controls the entire state of the component.
 
 ##### props:
 
+- `safe` - keeps the app from breaking on attempts to go to non existing steps.
+- `onChange` - function triggered on change.
 - `startStep` - choose from which step to start the wizard. Defaults to 1.
 - `externalOverrides` - use it for the external control of the component, for
   example if you want the wizard component to be controlled from an external
@@ -66,13 +68,15 @@ Component that controls the entire state of the component.
 
 ```
 <Wizard
-startStep={1}
-externalOverrides={{
-  currentStep: externalCurrentStep,
-  next: externalNextFn,
-  previous: externalPreviousFn,
-  jump: externalJumpFn
-}}
+  safe={false}
+  onChange={console.log}
+  startStep={1}
+  externalOverrides={{
+    currentStep: externalCurrentStep,
+    next: externalNextFn,
+    previous: externalPreviousFn,
+    jump: externalJumpFn
+  }}
 >{...}</Wizard>
 ```
 

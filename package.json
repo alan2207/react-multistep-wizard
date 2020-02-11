@@ -1,7 +1,7 @@
 {
   "name": "react-multistep-wizard",
-  "version": "2.1.0",
-  "description": "React wizard component",
+  "version": "2.2.0",
+  "description": "React Wizard Component",
   "author": "alan2207",
   "license": "MIT",
   "repository": "alan2207/react-multistep-wizard",

@@ -17,6 +17,8 @@ const App = () => {
         height: '100vh',
       }}>
       <Wizard
+        safe={false}
+        onChange={console.log}
         externalOverrides={{
           currentStep: step,
           jump: p => setStep(p),

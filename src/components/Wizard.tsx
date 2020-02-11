@@ -3,6 +3,12 @@ import React from 'react';
 export interface WizardProps {
   startStep: number;
   externalOverrides: Partial<WizardContextState>;
+  safe: boolean;
+  onChange: (info: {
+    state: WizardContextState;
+    method: 'jump' | 'previous' | 'next';
+    args: any;
+  }) => void;
 }
 
 export interface WizardContextState {
@@ -28,6 +34,8 @@ export class Wizard extends React.Component<WizardProps, WizardContextState> {
   static defaultProps = {
     startStep: 1,
     externalOverrides: {},
+    safe: true,
+    onChange: () => {},
   };
 
   static getDerivedStateFromProps(
@@ -41,33 +49,50 @@ export class Wizard extends React.Component<WizardProps, WizardContextState> {
   }
 
   previous = (...args: any[]) => {
-    if (this.state.currentStep > 1) {
-      if (this.props.externalOverrides.previous) {
-        this.props.externalOverrides.previous(...args);
-      } else {
-        this.setState(({ currentStep }) => ({ currentStep: currentStep - 1 }));
-      }
+    const { safe, externalOverrides, onChange } = this.props;
+
+    if (safe && this.state.currentStep <= 1) {
+      return;
     }
+
+    if (externalOverrides.previous) {
+      externalOverrides.previous(...args);
+    } else {
+      this.setState(({ currentStep }) => ({ currentStep: currentStep - 1 }));
+    }
+
+    onChange({ method: 'previous', state: this.state, args });
   };
 
   next = (...args: any[]) => {
-    if (this.state.currentStep < this.state.totalSteps) {
-      if (this.props.externalOverrides.next) {
-        this.props.externalOverrides.next(...args);
-      } else {
-        this.setState(({ currentStep }) => ({ currentStep: currentStep + 1 }));
-      }
+    const { safe, externalOverrides, onChange } = this.props;
+
+    if (safe && this.state.currentStep >= this.state.totalSteps) {
+      return;
     }
+
+    if (externalOverrides.next) {
+      externalOverrides.next(...args);
+    } else {
+      this.setState(({ currentStep }) => ({ currentStep: currentStep + 1 }));
+    }
+    onChange({ method: 'next', state: this.state, args });
   };
 
-  jump = (position: number) => {
-    if (position <= this.state.totalSteps) {
-      if (this.props.externalOverrides.jump) {
-        this.props.externalOverrides.jump(position);
-      } else {
-        this.setState({ currentStep: position });
-      }
+  jump = (position: number, ...args: any[]) => {
+    const { safe, externalOverrides, onChange } = this.props;
+
+    if (safe && position > this.state.totalSteps) {
+      return;
     }
+
+    if (externalOverrides.jump) {
+      externalOverrides.jump(position);
+    } else {
+      this.setState({ currentStep: position });
+    }
+
+    onChange({ method: 'jump', state: this.state, args: [position, ...args] });
   };
 
   init = (steps: number) => {
