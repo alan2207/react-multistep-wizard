@@ -1,10 +1,11 @@
 import React from 'react';
-import { WizardContextState, useWizard } from './Wizard';
+import { WizardContextState } from './types';
+import { useWizard } from './useWizard';
 
 export const Step: React.FC<{
   children: (ctx: WizardContextState) => React.ReactNode;
 }> = props => {
-  const { init, ...context } = useWizard();
+  const context = useWizard();
 
   return (
     <>

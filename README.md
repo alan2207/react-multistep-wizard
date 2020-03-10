@@ -98,12 +98,17 @@ Render prop options from `WizardContext`:
 - `previous`
 - `next`
 - `jump`
+- `init`
 
 #### `WithWizard`
 
 Component similar to `Step`. The only difference is that it should not be
 rendered from the `Steps` component, that way making sure it is always rendered
 regardless of the current step. Convenient for progress indicators.
+
+#### `useWizard`
+
+Hook that exposes the entire WizardContext to consumer components.
 
 ### TypeScript Types:
 

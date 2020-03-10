@@ -2,38 +2,46 @@ import React from 'react';
 
 import { Wizard, Steps, useWizard } from 'react-multistep-wizard';
 
-const steps = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-
-const Step = ({ step }) => {
+const Step = () => {
   const ctx = useWizard();
 
   return (
     <div>
-      <h1 style={{ textAlign: 'center' }}>{step}</h1>
-      <button onClick={ctx.previous}>Previous Step</button>
-      <button onClick={ctx.next}>Next Step</button>
+      <h1 style={{ textAlign: 'center' }}>{ctx.currentStep}</h1>
     </div>
   );
 };
 
-const Controls = () => {
+const Controls = ({ steps }) => {
   const ctx = useWizard();
 
   return (
     <div>
       {steps.map(step => (
         <button
-          style={{ width: '40px', fontSize: '25px' }}
+          style={{
+            width: '40px',
+            fontSize: '25px',
+            background: step === ctx.currentStep ? 'lightgreen' : 'white',
+          }}
           key={step}
           onClick={() => ctx.jump(step)}>
           {step}
         </button>
       ))}
+      <div style={{ textAlign: 'center' }}>
+        <button onClick={ctx.previous}>Previous Step</button>
+        <button onClick={ctx.next}>Next Step</button>
+      </div>
     </div>
   );
 };
 
 const App = () => {
+  const [steps] = React.useState([1, 2, 3, 4, 5, 6, 7, 8, 9]);
+
+  const [step, setStep] = React.useState(1);
+
   return (
     <div
       style={{
@@ -44,11 +52,19 @@ const App = () => {
         alignItems: 'center',
         height: '100vh',
       }}>
-      <Wizard safe={true} onChange={console.log}>
-        <Controls />
+      <Wizard
+        externalOverrides={{
+          currentStep: step,
+          next: () => setStep(s => s + 1),
+          previous: () => setStep(s => s - 1),
+          jump: setStep,
+        }}
+        safe={true}
+        onChange={console.log}>
+        <Controls steps={steps} />
         <Steps>
           {steps.map(step => (
-            <Step key={step} step={step} />
+            <Step key={step} />
           ))}
         </Steps>
       </Wizard>

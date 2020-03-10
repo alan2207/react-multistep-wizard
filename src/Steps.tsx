@@ -1,5 +1,5 @@
 import React from 'react';
-import { useWizard } from './Wizard';
+import { useWizard } from './useWizard';
 
 const flatMap = function(lambda: any, array: any) {
   return Array.prototype.concat.apply([], array.map(lambda));
