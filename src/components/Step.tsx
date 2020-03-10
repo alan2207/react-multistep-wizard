@@ -1,19 +1,16 @@
 import React from 'react';
-import { WizardContext, WizardContextState } from './Wizard';
+import { WizardContextState, useWizard } from './Wizard';
 
 export const Step: React.FC<{
   children: (ctx: WizardContextState) => React.ReactNode;
 }> = props => {
+  const { init, ...context } = useWizard();
+
   return (
-    <WizardContext.Consumer>
-      {({ init, ...context }) => {
-        if (typeof props.children === 'function') {
-          return props.children(context);
-        } else {
-          console.warn('Step component expects a function as children!');
-          return props.children;
-        }
-      }}
-    </WizardContext.Consumer>
+    <>
+      {typeof props.children === 'function'
+        ? props.children(context)
+        : props.children}
+    </>
   );
 };

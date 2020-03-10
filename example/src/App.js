@@ -1,11 +1,39 @@
 import React from 'react';
 
-import { Wizard, Steps, Step, WithWizard } from 'react-multistep-wizard';
+import { Wizard, Steps, useWizard } from 'react-multistep-wizard';
 
 const steps = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
+const Step = ({ step }) => {
+  const ctx = useWizard();
+
+  return (
+    <div>
+      <h1 style={{ textAlign: 'center' }}>{step}</h1>
+      <button onClick={ctx.previous}>Previous Step</button>
+      <button onClick={ctx.next}>Next Step</button>
+    </div>
+  );
+};
+
+const Controls = () => {
+  const ctx = useWizard();
+
+  return (
+    <div>
+      {steps.map(step => (
+        <button
+          style={{ width: '40px', fontSize: '25px' }}
+          key={step}
+          onClick={() => ctx.jump(step)}>
+          {step}
+        </button>
+      ))}
+    </div>
+  );
+};
+
 const App = () => {
-  const [step, setStep] = React.useState(1);
   return (
     <div
       style={{
@@ -16,40 +44,11 @@ const App = () => {
         alignItems: 'center',
         height: '100vh',
       }}>
-      <Wizard
-        safe={false}
-        onChange={console.log}
-        externalOverrides={{
-          currentStep: step,
-          jump: p => setStep(p),
-          previous: () => setStep(step => step - 1),
-          next: () => setStep(step => step + 1),
-        }}>
-        <div>
-          <WithWizard>
-            {ctx =>
-              steps.map(step => (
-                <button
-                  style={{ width: '40px', fontSize: '25px' }}
-                  key={step}
-                  onClick={() => ctx.jump(step)}>
-                  {step}
-                </button>
-              ))
-            }
-          </WithWizard>
-        </div>
+      <Wizard safe={true} onChange={console.log}>
+        <Controls />
         <Steps>
           {steps.map(step => (
-            <Step key={step}>
-              {ctx => (
-                <div>
-                  <h1 style={{ textAlign: 'center' }}>{step}</h1>
-                  <button onClick={ctx.previous}>Previous Step</button>
-                  <button onClick={ctx.next}>Next Step</button>
-                </div>
-              )}
-            </Step>
+            <Step key={step} step={step} />
           ))}
         </Steps>
       </Wizard>

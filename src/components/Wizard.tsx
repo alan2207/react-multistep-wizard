@@ -117,3 +117,13 @@ export class Wizard extends React.Component<WizardProps, WizardContextState> {
     );
   }
 }
+
+export const useWizard = () => {
+  const ctx = React.useContext(WizardContext);
+
+  if (!ctx) {
+    throw new Error('Out of context!');
+  }
+
+  return ctx;
+};
