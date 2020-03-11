@@ -1,8 +1,8 @@
 export interface WizardProps {
-  startStep: number;
-  externalOverrides: Partial<WizardContextState>;
-  safe: boolean;
-  onChange: (state: WizardContextState) => void;
+  startStep?: number;
+  externalOverrides?: Partial<WizardContextState>;
+  safe?: boolean;
+  onChange?: (state: WizardContextState) => void;
 }
 
 export interface WizardContextState {
