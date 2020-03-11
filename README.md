@@ -85,6 +85,10 @@ Component that controls the entire state of the component.
 Component that controls the rendering of the current step. Doesn't accept any
 props, and must have the `Step` components as children.
 
+#### `useWizard`
+
+Hook that exposes the entire Wizard component state to consumer components.
+
 #### `Step`
 
 Component that describes the actual step. By using render prop function, it can
@@ -105,10 +109,6 @@ Render prop options from `WizardContext`:
 Component similar to `Step`. The only difference is that it should not be
 rendered from the `Steps` component, that way making sure it is always rendered
 regardless of the current step. Convenient for progress indicators.
-
-#### `useWizard`
-
-Hook that exposes the entire WizardContext to consumer components.
 
 ### TypeScript Types:
 
