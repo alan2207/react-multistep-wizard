@@ -10,20 +10,14 @@ export const Wizard: React.FC<WizardProps> = ({
   children,
 }) => {
   const mounted = React.useRef(false);
-  const [currentStep, setCurrentStep] = React.useState(
-    externalOverrides.currentStep || startStep,
-  );
+  const [currentStep, setCurrentStep] = React.useState(startStep);
   const [totalSteps, setTotalSteps] = React.useState(1);
 
-  React.useEffect(() => {
-    if (externalOverrides.currentStep !== undefined) {
-      setCurrentStep(externalOverrides.currentStep);
-    }
-  }, [externalOverrides.currentStep]);
+  const step = externalOverrides.currentStep || currentStep;
 
   const previous = React.useCallback(
     (...args: any[]) => {
-      if (safe && currentStep <= 1) {
+      if (safe && step <= 1) {
         return;
       }
 
@@ -33,12 +27,12 @@ export const Wizard: React.FC<WizardProps> = ({
         setCurrentStep(s => s - 1);
       }
     },
-    [currentStep, externalOverrides.previous, safe, setCurrentStep],
+    [step, externalOverrides.previous, safe, setCurrentStep],
   );
 
   const next = React.useCallback(
     (...args: any[]) => {
-      if (safe && currentStep >= totalSteps) {
+      if (safe && step >= totalSteps) {
         return;
       }
 
@@ -48,7 +42,7 @@ export const Wizard: React.FC<WizardProps> = ({
         setCurrentStep(s => s + 1);
       }
     },
-    [currentStep, externalOverrides.next, totalSteps, safe, setCurrentStep],
+    [step, externalOverrides.next, totalSteps, safe, setCurrentStep],
   );
 
   const jump = React.useCallback(
@@ -63,7 +57,7 @@ export const Wizard: React.FC<WizardProps> = ({
         setCurrentStep(position);
       }
     },
-    [currentStep, externalOverrides.jump, totalSteps, safe, setCurrentStep],
+    [ externalOverrides.jump, totalSteps, safe, setCurrentStep],
   );
 
   const init = React.useCallback((stepsLength: number) => {
@@ -72,14 +66,14 @@ export const Wizard: React.FC<WizardProps> = ({
 
   const value: WizardContextState = React.useMemo(() => {
     return {
-      currentStep,
+      currentStep: step,
       totalSteps,
       init,
       previous,
       next,
       jump,
     };
-  }, [currentStep, totalSteps, init, previous, next, jump]);
+  }, [step, totalSteps, init, previous, next, jump]);
 
   React.useEffect(() => {
     if (mounted.current) {
@@ -87,7 +81,7 @@ export const Wizard: React.FC<WizardProps> = ({
     } else {
       mounted.current = true;
     }
-  }, [currentStep]);
+  }, [step]);
 
   return (
     <WizardContext.Provider value={value}>{children}</WizardContext.Provider>
