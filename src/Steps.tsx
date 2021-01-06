@@ -10,9 +10,11 @@ export const Steps: React.FC = ({ children }) => {
 
   React.useEffect(() => {
     if (Array.isArray(children)) {
-      ctx.init(children.length ? flatMap((v: any) => v, children).length : 1);
+      ctx.setTotalSteps(
+        children.length ? flatMap((v: any) => v, children).length : 1,
+      );
     }
-  }, [children, ctx.init]);
+  }, [children, ctx.setTotalSteps]);
 
   return (
     <>

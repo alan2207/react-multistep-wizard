@@ -2,84 +2,80 @@ import React from 'react';
 import { WizardContextState, WizardProps } from './types';
 import { WizardContext } from './WizardContext';
 
-export const Wizard: React.FC<WizardProps> = ({
-  externalOverrides = {},
-  startStep = 1,
-  safe = true,
+export const Wizard = ({
+  isSafe = true,
   onChange = () => {},
   children,
-}) => {
-  const mounted = React.useRef(false);
-  const [currentStep, setCurrentStep] = React.useState(startStep);
+  isControlled = false,
+  ...controlledProps
+}: { children: React.ReactNode } & WizardProps) => {
+  const isMounted = React.useRef(false);
+  const [currentStep, setCurrentStep] = React.useState(1);
   const [totalSteps, setTotalSteps] = React.useState(1);
 
-  const step = externalOverrides.currentStep || currentStep;
+  const step = isControlled ? controlledProps.currentStep : currentStep;
 
   const previous = React.useCallback(
     (...args: any[]) => {
-      if (safe && step <= 1) {
+      if (isSafe && step <= 1) {
         return;
       }
 
-      if (externalOverrides.previous) {
-        externalOverrides.previous(...args);
+      if (controlledProps.previous) {
+        controlledProps.previous(...args);
       } else {
         setCurrentStep(s => s - 1);
       }
     },
-    [step, externalOverrides.previous, safe, setCurrentStep],
+    [step, controlledProps.previous, isSafe, setCurrentStep],
   );
 
   const next = React.useCallback(
     (...args: any[]) => {
-      if (safe && step >= totalSteps) {
+      if (isSafe && step >= totalSteps) {
         return;
       }
 
-      if (externalOverrides.next) {
-        externalOverrides.next(...args);
+      if (controlledProps.next) {
+        controlledProps.next(...args);
       } else {
         setCurrentStep(s => s + 1);
       }
     },
-    [step, externalOverrides.next, totalSteps, safe, setCurrentStep],
+    [step, controlledProps.next, totalSteps, isSafe, setCurrentStep],
   );
 
   const jump = React.useCallback(
     (position: number, ...args: any[]) => {
-      if (safe && position > totalSteps) {
+      if (isSafe && position > totalSteps) {
         return;
       }
 
-      if (externalOverrides.jump) {
-        externalOverrides.jump(position, ...args);
+      if (controlledProps.jump) {
+        controlledProps.jump(position, ...args);
       } else {
         setCurrentStep(position);
       }
     },
-    [ externalOverrides.jump, totalSteps, safe, setCurrentStep],
+    [controlledProps.jump, totalSteps, isSafe, setCurrentStep],
   );
-
-  const init = React.useCallback((stepsLength: number) => {
-    setTotalSteps(stepsLength);
-  }, []);
 
   const value: WizardContextState = React.useMemo(() => {
     return {
       currentStep: step,
       totalSteps,
-      init,
+      setTotalSteps,
       previous,
       next,
       jump,
     };
-  }, [step, totalSteps, init, previous, next, jump]);
+  }, [step, totalSteps, setTotalSteps, previous, next, jump]);
 
   React.useEffect(() => {
-    if (mounted.current) {
+    if (isMounted.current) {
       onChange(value);
     } else {
-      mounted.current = true;
+      isMounted.current = true;
     }
   }, [step]);
 

@@ -52,14 +52,21 @@ const App = () => {
         alignItems: 'center',
         height: '100vh',
       }}>
+      <Wizard onChange={console.log}>
+        <Controls steps={steps} />
+        <Steps>
+          {steps.map(step => (
+            <Step key={step} />
+          ))}
+        </Steps>
+      </Wizard>
+
       <Wizard
-        externalOverrides={{
-          currentStep: step,
-          next: () => setStep(s => s + 1),
-          previous: () => setStep(s => s - 1),
-          jump: setStep,
-        }}
-        safe={true}
+        isControlled
+        currentStep={step}
+        next={() => setStep(s => s + 1)}
+        previous={() => setStep(s => s - 1)}
+        jump={setStep}
         onChange={console.log}>
         <Controls steps={steps} />
         <Steps>

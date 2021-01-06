@@ -1,9 +1,24 @@
-export interface WizardProps {
-  startStep?: number;
-  externalOverrides?: Partial<WizardContextState>;
-  safe?: boolean;
+type GeneralProps = {
+  isSafe?: boolean;
   onChange?: (state: WizardContextState) => void;
-}
+};
+
+type ControlledProps =
+  | ({ isControlled: true } & {
+      currentStep: number;
+      jump: (...args: any[]) => void;
+      previous?: (...args: any[]) => void;
+      next?: (...args: any[]) => void;
+    })
+  | {
+      isControlled: false;
+      currentStep: never;
+      jump: never;
+      previous: never;
+      next: never;
+    };
+
+export type WizardProps = GeneralProps & ControlledProps;
 
 export interface WizardContextState {
   currentStep: number;
@@ -11,5 +26,5 @@ export interface WizardContextState {
   previous: (...args: any[]) => void;
   next: (...args: any[]) => void;
   jump: (...args: any[]) => void;
-  init: (...args: any[]) => void;
+  setTotalSteps: (total: number) => void;
 }
